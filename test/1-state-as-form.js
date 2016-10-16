@@ -90,4 +90,31 @@ describe('State as form', () => {
     getFieldValue('hello')(store.getState())
     .should.equal('yo');
   });
+
+  specify('the default value may come from the form itself', () => {
+    const store = createStore(reducer, {
+      title: 'Welcome',
+    });
+
+    const input = mount(
+      <Provider store={store}>
+        <Field name="title-fr" defaultValueName="title" />
+      </Provider>
+    ).find('input');
+
+    input.prop('value').should.equal('Welcome');
+
+    input.simulate('change', {
+      target: {
+        value: 'Bienvenue',
+      },
+    });
+
+    input.prop('value').should.equal('Bienvenue');
+
+    store.getState().should.deep.equal({
+      title: 'Welcome',
+      'title-fr': 'Bienvenue',
+    });
+  });
 });
