@@ -34,4 +34,27 @@ describe('State as form', () => {
     getFieldValue('hello')(store.getState())
     .should.equal('yo');
   });
+
+  it('shows a deep editable field', () => {
+    const store = createStore(reducer);
+
+    const input = mount(
+      <Provider store={store}>
+        <Field name="a">
+          <Field name="b">
+            <Field id="c" name="c" />
+          </Field>
+        </Field>
+      </Provider>
+    ).find('#c input');
+
+    input.simulate('change', {
+      target: {
+        value: 'yo',
+      },
+    });
+
+    getFieldValue('a', 'b', 'c')(store.getState())
+    .should.equal('yo');
+  });
 });
