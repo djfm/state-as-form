@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeField, Field } from '../..';
+import { makeField, Field } from '../../lib';
 
 const TodoListItem = makeField(
   () => <p><Field name="task" /></p>

@@ -5,7 +5,7 @@ import { createStore } from 'redux';
 
 const makeReducer = () => {
   // eslint-disable-next-line global-require
-  const { reducer } = require('../..');
+  const { reducer } = require('../../lib');
 
   return reducer;
 };
@@ -37,5 +37,5 @@ render();
 
 if (module.hot) {
   module.hot.accept('./App', render);
-  module.hot.accept('../..', () => store.replaceReducer(makeReducer()));
+  module.hot.accept('../../lib', () => store.replaceReducer(makeReducer()));
 }
