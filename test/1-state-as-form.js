@@ -117,4 +117,43 @@ describe('State as form', () => {
       'title-fr': 'Bienvenue',
     });
   });
+
+  specify('the final component does not receive superfluous props', () => {
+    const store = createStore(reducer);
+
+    const input = mount(
+      <Provider store={store}>
+        <Field name="hello" defaultValueName="bob" defaultValue="alice" />
+      </Provider>
+    ).find('input');
+
+    input.props().should.not.have.any.keys(
+      'defaultValueName',
+      'defaultValue'
+    );
+  });
+
+  specify('by default, an input has type text', () => {
+    const store = createStore(reducer);
+
+    const input = mount(
+      <Provider store={store}>
+        <Field name="hello" />
+      </Provider>
+    ).find('input');
+
+    input.prop('type').should.equal('text');
+  });
+
+  specify('an input\'s type can be specified', () => {
+    const store = createStore(reducer);
+
+    const input = mount(
+      <Provider store={store}>
+        <Field name="hello" type="email" />
+      </Provider>
+    ).find('input');
+
+    input.prop('type').should.equal('email');
+  });
 });
