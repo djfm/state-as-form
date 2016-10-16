@@ -10,8 +10,13 @@ const makeReducer = () => {
   return reducer;
 };
 
+const initialState = {
+  todoList: [{ id: 1, task: 'Do Something' }],
+};
+
 const store = createStore(
   makeReducer(),
+  initialState,
   // eslint-disable-next-line no-underscore-dangle
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );

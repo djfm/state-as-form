@@ -1,32 +1,43 @@
-import React from 'react';
-import { Form, makeField } from './lib';
+import React, { PropTypes } from 'react';
+import { makeForm, Field } from './lib';
 
-const TodoListItem = () =>
-  <div>
-    Hey!!
-  </div>
-;
+const TodoListItemForm = () =>
+  <p><Field name="task" /></p>;
 
-const TodoList = makeField(({
-  value = [],
-  setValue,
-}) =>
-  <div>
-    {value.map(
-      (item, index) => <TodoListItem key={index} {...item} />
-    )}
+const TodoListItem = makeForm(TodoListItemForm);
+
+const AddTodoListItemForm = ({ value = [], setValue }) =>
+  <p>
     <button
-      type="button"
-      onClick={() => setValue(value.concat('Something to do'))}
+      onClick={() => setValue(value.concat({ id: value.length + 1 }))}
     >
-      Add TODO Item
+      Add Todo
     </button>
-  </div>
-);
+  </p>;
+
+AddTodoListItemForm.propTypes = {
+  value: PropTypes.array,
+  setValue: PropTypes.func.isRequired,
+};
+
+const AddTodoListItem = makeForm(AddTodoListItemForm);
+
+const TodoListForm = ({ value: todos }) =>
+  <div>
+    {todos.map(
+      ({ id }) =>
+        <TodoListItem key={id} name={todo => todo.id === id} />
+    )}
+    <AddTodoListItem />
+  </div>;
+
+TodoListForm.propTypes = {
+  value: PropTypes.array,
+};
+
+const TodoList = makeForm(TodoListForm);
 
 const App = () =>
-  <Form name="app">
-    <TodoList name="todoList" />
-  </Form>;
+  <TodoList name="todoList" />;
 
 export default App;
