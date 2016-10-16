@@ -1,10 +1,10 @@
 import React, { PropTypes } from 'react';
-import { makeForm, Field } from './lib';
+import { makeField, Field } from './lib';
 
 const TodoListItemForm = () =>
   <p><Field name="task" /></p>;
 
-const TodoListItem = makeForm(TodoListItemForm);
+const TodoListItem = makeField(TodoListItemForm);
 
 const AddTodoListItemForm = ({ value = [], setValue }) =>
   <p>
@@ -20,7 +20,7 @@ AddTodoListItemForm.propTypes = {
   setValue: PropTypes.func.isRequired,
 };
 
-const AddTodoListItem = makeForm(AddTodoListItemForm);
+const AddTodoListItem = makeField(AddTodoListItemForm);
 
 const TodoListForm = ({ value: todos }) =>
   <div>
@@ -35,7 +35,7 @@ TodoListForm.propTypes = {
   value: PropTypes.array,
 };
 
-const TodoList = makeForm(TodoListForm);
+const TodoList = makeField(TodoListForm);
 
 const App = () =>
   <TodoList name="todoList" />;

@@ -8,7 +8,7 @@ import { createStore } from 'redux';
 import {
   Field,
   reducer,
-  getValue,
+  getFieldValue,
 } from '../lib';
 
 describe('State as form', () => {
@@ -31,7 +31,7 @@ describe('State as form', () => {
       },
     });
 
-    getValue('hello')(store.getState())
+    getFieldValue('hello')(store.getState())
     .should.equal('yo');
   });
 });
