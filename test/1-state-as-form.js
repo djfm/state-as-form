@@ -57,4 +57,16 @@ describe('State as form', () => {
     getFieldValue('a', 'b', 'c')(store.getState())
     .should.equal('yo');
   });
+
+  specify('the default value of fields is the empty string', () => {
+    const store = createStore(reducer);
+
+    const input = mount(
+      <Provider store={store}>
+        <Field name="hello" />
+      </Provider>
+    ).find('input');
+
+    input.prop('value').should.equal('');
+  });
 });
