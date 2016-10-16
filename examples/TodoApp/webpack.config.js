@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
   entry: './index.jsx',
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, 'public'),
     filename: 'bundle.js',
     publicPath: '/',
   },
@@ -19,6 +19,6 @@ module.exports = {
   devServer: {
     host: '0.0.0.0',
     port: 6543,
-    contentBase: 'dist/',
+    contentBase: 'public/',
   },
 };
