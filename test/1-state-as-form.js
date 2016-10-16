@@ -69,4 +69,25 @@ describe('State as form', () => {
 
     input.prop('value').should.equal('');
   });
+
+  specify('a default value can be provided to fields', () => {
+    const store = createStore(reducer);
+
+    const input = mount(
+      <Provider store={store}>
+        <Field name="hello" defaultValue="world" />
+      </Provider>
+    ).find('input');
+
+    input.prop('value').should.equal('world');
+
+    input.simulate('change', {
+      target: {
+        value: 'yo',
+      },
+    });
+
+    getFieldValue('hello')(store.getState())
+    .should.equal('yo');
+  });
 });
