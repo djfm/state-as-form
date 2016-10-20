@@ -9,13 +9,17 @@ import {
   Field,
   reducer,
   getFieldValue,
+  setFieldValueAction,
 } from '../lib';
 
 describe('State as form', () => {
   it('shows an editable field at root level', () => {
-    const store = createStore(reducer, {
-      hello: 'world',
-    });
+    const store = createStore(reducer);
+
+    store.dispatch(setFieldValueAction({
+      path: ['hello'],
+      value: 'world',
+    }));
 
     const input = mount(
       <Provider store={store}>
@@ -92,9 +96,12 @@ describe('State as form', () => {
   });
 
   specify('the default value may come from the form itself', () => {
-    const store = createStore(reducer, {
-      title: 'Welcome',
-    });
+    const store = createStore(reducer);
+
+    store.dispatch(setFieldValueAction({
+      path: ['title'],
+      value: 'Welcome',
+    }));
 
     const input = mount(
       <Provider store={store}>
@@ -160,11 +167,12 @@ describe('State as form', () => {
   specify('the form reducer may be mounted below root level', () => {
     const store = createStore(combineReducers({
       forms: reducer,
-    }), {
-      forms: {
-        title: 'Welcome',
-      },
-    });
+    }));
+
+    store.dispatch(setFieldValueAction({
+      path: ['title'],
+      value: 'Welcome',
+    }));
 
     const input = mount(
       <Provider store={store}>
