@@ -3,7 +3,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, combineReducers } from 'redux';
 
 import {
   Field,
@@ -155,5 +155,23 @@ describe('State as form', () => {
     ).find('input');
 
     input.prop('type').should.equal('email');
+  });
+
+  specify('the form reducer may be mounted below root level', () => {
+    const store = createStore(combineReducers({
+      forms: reducer,
+    }), {
+      forms: {
+        title: 'Welcome',
+      },
+    });
+
+    const input = mount(
+      <Provider store={store}>
+        <Field mountPoint="forms" name="title" defaultValueName="title" />
+      </Provider>
+    ).find('input');
+
+    input.prop('value').should.equal('Welcome');
   });
 });
