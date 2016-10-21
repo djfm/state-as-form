@@ -182,4 +182,25 @@ describe('State as form', () => {
 
     input.prop('value').should.equal('Welcome');
   });
+
+  specify('the mountPoint is propagated by context', () => {
+    const store = createStore(combineReducers({
+      forms: reducer,
+    }));
+
+    store.dispatch(setFieldValueAction({
+      path: ['title'],
+      value: 'Welcome',
+    }));
+
+    const input = mount(
+      <Provider store={store}>
+        <Field mountPoint="forms">
+          <Field name="title" />
+        </Field>
+      </Provider>
+    ).find('input');
+
+    input.prop('value').should.equal('Welcome');
+  });
 });
