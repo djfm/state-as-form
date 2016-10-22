@@ -95,47 +95,16 @@ describe('State as form', () => {
     .should.equal('yo');
   });
 
-  specify('the default value may come from the form itself', () => {
-    const store = createStore(reducer);
-
-    store.dispatch(setFieldValueAction({
-      path: ['title'],
-      value: 'Welcome',
-    }));
-
-    const input = mount(
-      <Provider store={store}>
-        <Field name="title-fr" defaultValueName="title" />
-      </Provider>
-    ).find('input');
-
-    input.prop('value').should.equal('Welcome');
-
-    input.simulate('change', {
-      target: {
-        value: 'Bienvenue',
-      },
-    });
-
-    input.prop('value').should.equal('Bienvenue');
-
-    store.getState().should.deep.equal({
-      title: 'Welcome',
-      'title-fr': 'Bienvenue',
-    });
-  });
-
   specify('the final component does not receive superfluous props', () => {
     const store = createStore(reducer);
 
     const input = mount(
       <Provider store={store}>
-        <Field name="hello" defaultValueName="bob" defaultValue="alice" />
+        <Field name="hello" defaultValue="alice" />
       </Provider>
     ).find('input');
 
     input.props().should.not.have.any.keys(
-      'defaultValueName',
       'defaultValue'
     );
   });
@@ -176,7 +145,7 @@ describe('State as form', () => {
 
     const input = mount(
       <Provider store={store}>
-        <Field mountPoint="forms" name="title" defaultValueName="title" />
+        <Field mountPoint="forms" name="title" />
       </Provider>
     ).find('input');
 
