@@ -1,3 +1,5 @@
+import chai from 'chai';
+
 import {
   prop,
 } from '../lib/accessors';
@@ -26,6 +28,11 @@ describe('Accessors', () => {
 
       specify('a deep getter can be a function of the value', () =>
         prop('t', x => x === 1).get({ t: { a: {}, b: 1 } }).should.equal(1)
+      );
+
+      specify('an empty path retrieves the full object', () =>
+        prop().get({ hello: 'world' })
+          .should.deep.equal({ hello: 'world' })
       );
     });
 
@@ -56,6 +63,11 @@ describe('Accessors', () => {
       specify('setters preserve array structures', () =>
         prop(x => x === 1).set(2)([0, 1, 3])
         .should.deep.equal([0, 2, 3])
+      );
+
+      specify('an empty path sets the full object', () =>
+        prop().set({ hello: 'world' })()
+          .should.deep.equal({ hello: 'world' })
       );
     });
 
@@ -94,6 +106,12 @@ describe('Accessors', () => {
       specify('deleters preserve array structures', () =>
         prop(x => x === 1).delete([0, 1, 3])
         .should.deep.equal([0, 3])
+      );
+
+      specify('an empty path deletes the full object', () =>
+        chai.expect(
+          prop().delete({ hello: 'world' })
+        ).to.equal(undefined)
       );
     });
   });

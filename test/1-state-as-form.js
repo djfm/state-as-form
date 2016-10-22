@@ -172,4 +172,33 @@ describe('State as form', () => {
 
     input.prop('value').should.equal('Welcome');
   });
+
+  specify('"onSubmit" is called with the form\'s values', () => {
+    const store = createStore(reducer);
+
+    store.dispatch(setFieldValueAction({
+      path: ['email'],
+      value: 'bob@example.com',
+    }));
+
+    let formValues;
+
+    const app = mount(
+      <Provider store={store}>
+        <Field
+          component="form"
+          onSubmit={values => { formValues = values; }}
+        >
+          <Field name="email" />
+        </Field>
+      </Provider>
+    );
+
+    app.find('input').prop('value').should.equal('bob@example.com');
+    app.find('form').simulate('submit');
+
+    formValues.should.deep.equal({
+      email: 'bob@example.com',
+    });
+  });
 });
