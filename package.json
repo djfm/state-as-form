@@ -1,6 +1,6 @@
 {
   "name": "state-as-form",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Experimental approach to form management... the whole state tree is a form :)",
   "main": "dist/state-as-form.min.js",
   "jsnext:main": "lib/index.js",
