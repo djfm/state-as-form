@@ -10,6 +10,7 @@ import {
   reducer,
   getFieldValue,
   setFieldValueAction,
+  updateFieldValueAction,
 } from '../lib';
 
 describe('State as form', () => {
@@ -200,5 +201,23 @@ describe('State as form', () => {
     formValues.should.deep.equal({
       email: 'bob@example.com',
     });
+  });
+
+  specify('"updateFieldValueAction" applies a function to a field', () => {
+    const store = createStore(reducer);
+
+    store.dispatch(setFieldValueAction({
+      path: ['list'],
+      value: [1, 2],
+    }));
+
+    store.dispatch(updateFieldValueAction({
+      path: ['list'],
+      update: list => list.concat(3),
+    }));
+
+    getFieldValue('list')(store.getState()).should.deep.equal(
+      [1, 2, 3]
+    );
   });
 });
