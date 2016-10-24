@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
 
 import {
+  makeField,
   Field,
   reducer,
   getFieldValue,
@@ -219,5 +220,26 @@ describe('State as form', () => {
     getFieldValue('list')(store.getState()).should.deep.equal(
       [1, 2, 3]
     );
+  });
+
+  specify('"mapState" is used to map parent state to field props', () => {
+    const store = createStore(reducer);
+
+    store.dispatch(setFieldValueAction({
+      path: ['currency'],
+      value: 'EUR',
+    }));
+
+    const Price = makeField(({ currency }) =>
+      <span>{currency}</span>
+    );
+
+    const app = mount(
+      <Provider store={store}>
+        <Price mapState={({ currency }) => ({ currency })} />
+      </Provider>
+    );
+
+    app.find('span').text().should.equal('EUR');
   });
 });
