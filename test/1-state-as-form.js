@@ -41,6 +41,23 @@ describe('State as form', () => {
     .should.equal('yo');
   });
 
+  it('field update when the store\'s state changes', () => {
+    const store = createStore(reducer);
+
+    const input = mount(
+      <Provider store={store}>
+        <Field name="hello" />
+      </Provider>
+    ).find('input');
+
+    store.dispatch(setFieldValueAction({
+      path: ['hello'],
+      value: 'world',
+    }));
+
+    input.prop('value').should.equal('world');
+  });
+
   it('shows a deep editable field', () => {
     const store = createStore(reducer);
 
@@ -102,12 +119,12 @@ describe('State as form', () => {
 
     const input = mount(
       <Provider store={store}>
-        <Field name="hello" defaultValue="alice" />
+        <Field name="hello" defaultValue="alice" mountPoint="lala" />
       </Provider>
     ).find('input');
 
     input.props().should.not.have.any.keys(
-      'defaultValue'
+      'defaultValue', 'mountPoint'
     );
   });
 
@@ -154,7 +171,7 @@ describe('State as form', () => {
     input.prop('value').should.equal('Welcome');
   });
 
-  specify('the mountPoint is propagated by context', () => {
+  specify('the mountPoint is propagated to children', () => {
     const store = createStore(combineReducers({
       forms: reducer,
     }));
@@ -202,6 +219,28 @@ describe('State as form', () => {
     formValues.should.deep.equal({
       email: 'bob@example.com',
     });
+  });
+
+  specify('"onChange" maps a field\'s values', () => {
+    const store = createStore(reducer);
+
+    const app = mount(
+      <Provider store={store}>
+        <Field
+          onChange={values => Object.assign({ changed: true }, values)}
+        >
+          <Field name="email" />
+        </Field>
+      </Provider>
+    );
+
+    app.find('input').simulate('change', {
+      target: {
+        value: 'bob@example.com',
+      },
+    });
+
+    getFieldValue('changed')(store.getState()).should.equal(true);
   });
 
   specify('"updateFieldValueAction" applies a function to a field', () => {

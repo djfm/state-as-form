@@ -6,10 +6,10 @@ const TodoListItem = makeField(
 );
 
 const AddTodoListItem = makeField(
-  ({ value = [], setValue }) =>
+  ({ value: todos = [], setValue }) =>
     <p>
       <button
-        onClick={() => setValue(value.concat({ id: value.length + 1 }))}
+        onClick={() => setValue(todos.concat({ id: todos.length + 1 }))}
       >
         Add Todo
       </button>
