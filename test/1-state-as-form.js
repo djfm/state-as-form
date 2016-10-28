@@ -243,6 +243,42 @@ describe('State as form', () => {
     getFieldValue('changed')(store.getState()).should.equal(true);
   });
 
+  specify('"onChange" also receives a setter for the field', done => {
+    const store = createStore(reducer);
+
+    const app = mount(
+      <Provider store={store}>
+        <Field
+          onChange={
+            (values, setValue) => {
+              setImmediate(() => {
+                setValue({ changed: true });
+              });
+              return values;
+            }
+          }
+        >
+          <Field name="email" />
+        </Field>
+      </Provider>
+    );
+
+    app.find('input').simulate('change', {
+      target: {
+        value: 'bob@example.com',
+      },
+    });
+
+    setTimeout(() => {
+      try {
+        getFieldValue('changed')(store.getState()).should.equal(true);
+        done();
+      } catch (e) {
+        done(e);
+      }
+    }, 0);
+  });
+
   specify('"updateFieldValueAction" applies a function to a field', () => {
     const store = createStore(reducer);
 
