@@ -119,12 +119,17 @@ describe('State as form', () => {
 
     const input = mount(
       <Provider store={store}>
-        <Field name="hello" defaultValue="alice" mountPoint="lala" />
+        <Field
+          name="hello"
+          defaultValue="alice"
+          mountPoint="lala"
+          mapState={() => ({})}
+        />
       </Provider>
     ).find('input');
 
     input.props().should.not.have.any.keys(
-      'defaultValue', 'mountPoint'
+      'defaultValue', 'mountPoint', 'mapState'
     );
   });
 
