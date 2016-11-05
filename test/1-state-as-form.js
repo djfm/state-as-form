@@ -281,7 +281,7 @@ describe('State as form', () => {
       } catch (e) {
         done(e);
       }
-    }, 0);
+    }, 10);
   });
 
   specify('"updateFieldValueAction" applies a function to a field', () => {
